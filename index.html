@@ -87,6 +87,8 @@ body {
     text-align: left;
 }
 
+
+
 .goals-heading {
     font-family: 'Playfair Display', serif;
     font-size: 2rem;
@@ -121,9 +123,19 @@ body {
     transform: translateY(-5px);
 }
 
-.goal-icon {
-    font-size: 2.5rem;
-    margin-bottom: 0.8rem;
+.goal-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+    border: 3px solid var(--secondary-color);
+}
+
+.goal-image:hover {
+    transform: scale(1.05);
 }
 
 .goal-text {
@@ -148,9 +160,10 @@ body {
         padding: 1rem 0.5rem;
     }
     
-    .goal-icon {
-        font-size: 2rem;
-        margin-bottom: 0.5rem;
+    .goal-image {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 0.8rem;
     }
     
     .goal-text {
@@ -169,6 +182,11 @@ body {
         width: 100%;
         max-width: none;
         padding: 1rem;
+    }
+    
+    .goal-image {
+        width: 100px;
+        height: 100px;
     }
 }
 
@@ -1067,25 +1085,35 @@ body {
                 <h3 class="goals-heading">What We Stand For</h3>
                 <div class="goals-inline">
                     <div class="goal-item">
-                        <span class="goal-icon">🌱</span>
+                        <img src="https://drive.google.com/thumbnail?id=15UPO_q8zNbF6TD7VB566t1t-QnOjuHlr&sz=w250"
+                             alt="Environmental Protection" 
+                             class="goal-image">
                         <span class="goal-text">Environmental Protection</span>
                     </div>
+                    
                     <div class="goal-item">
-                        <span class="goal-icon">🤝</span>
-                        <span class="goal-text">Community Empowerment</span>
-                    </div>
-                    <div class="goal-item">
-                        <span class="goal-icon">♻️</span>
+                        <img src="https://drive.google.com/thumbnail?id=1NXfDv90q28Y-_oDCHSve8zM232ZuzEms&sz=w250"
+                             alt="Plastic Alternative" 
+                             class="goal-image">
                         <span class="goal-text">Plastic Alternative</span>
+                    </div> 
+                    <div class="goal-item">
+                        <img src="https://drive.google.com/thumbnail?id=1jYntuRsvBYaN-DwnNdcQovADUQL3i2hi&sz=w250"
+                             alt="Fair Trade Practices" 
+                             class="goal-image">
+                        <span class="goal-text">Fair Trade Practices</span>
                     </div>
                     <div class="goal-item">
-                        <span class="goal-icon">🎯</span>
-                        <span class="goal-text">Fair Trade Practices</span>
+                        <img src="https://drive.google.com/thumbnail?id=11XChBb58SKQJueWucQzhpzZ6vSk3Qikw&sz=w250"
+                        
+                             alt="Community Empowerment" 
+                             class="goal-image">
+                        <span class="goal-text">Community Empowerment</span>
                     </div>
                 </div>
             </div>
             
-            
+    
             <a href="#products" class="shop-btn">Explore Our Products</a>
         </div>
     </div>
