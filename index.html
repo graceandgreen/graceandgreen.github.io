@@ -1032,6 +1032,105 @@ body {
         height: 180px;
     }
 }
+
+
+        /* Modal Background */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.9);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Modal Content (Image) */
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 900px;
+    max-height: 80vh;
+    object-fit: contain;
+    animation: zoomIn 0.3s ease-in-out;
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.7); }
+    to { transform: scale(1); }
+}
+
+/* Caption Text */
+#caption {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    text-align: center;
+    color: #ccc;
+    padding: 10px 0;
+    height: 50px;
+    font-size: 18px;
+    font-weight: 300;
+}
+
+/* Close Button */
+.close {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+}
+
+/* Make images clickable */
+.product-img {
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+.product-img:hover {
+    transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media only screen and (max-width: 700px) {
+    .modal-content {
+        width: 95%;
+        max-height: 70vh;
+    }
+    
+    .close {
+        top: 10px;
+        right: 20px;
+        font-size: 30px;
+    }
+    
+    #caption {
+        font-size: 16px;
+        width: 95%;
+    }
+}
+
         
     </style>
 </head>
@@ -1195,6 +1294,15 @@ body {
             </div>
         </div>
     </section>
+
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modalImage">
+        <div id="caption"></div>
+    </div>
+
 
     <!-- Gallery Modal -->
     <div id="galleryModal" class="gallery-modal">
@@ -1428,6 +1536,65 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+        // Get modal elements
+const modal = document.getElementById('imageModal');
+const modalImg = document.getElementById('modalImage');
+const captionText = document.getElementById('caption');
+const closeBtn = document.querySelector('.close');
+
+// Function to open modal with image
+function openImageModal(imgSrc, imgAlt) {
+    modal.style.display = 'block';
+    modalImg.src = imgSrc;
+    captionText.innerHTML = imgAlt;
+    
+    // Prevent body scrolling when modal is open
+    document.body.style.overflow = 'hidden';
+}
+
+// Add click event listeners to all product images
+document.addEventListener('DOMContentLoaded', function() {
+    const productImages = document.querySelectorAll('.product-img');
+    
+    productImages.forEach(function(img) {
+        img.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent the product card click event
+            openImageModal(this.src, this.alt);
+        });
+    });
+});
+
+// Close modal functionality
+closeBtn.addEventListener('click', function() {
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto'; // Restore body scrolling
+});
+
+// Close modal when clicking outside the image
+modal.addEventListener('click', function(e) {
+    if (e.target === modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && modal.style.display === 'block') {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+});
+
+// Handle window resize
+window.addEventListener('resize', function() {
+    if (modal.style.display === 'block') {
+        // Recalculate modal content size if needed
+        modalImg.style.maxHeight = '80vh';
+    }
+});
+
 </script>
 
 </body>
