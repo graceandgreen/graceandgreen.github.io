@@ -1032,9 +1032,7 @@ body {
         height: 180px;
     }
 }
-
-
-        /* Modal Background */
+/* Gallery Modal */
 .modal {
     display: none;
     position: fixed;
@@ -1053,8 +1051,83 @@ body {
     to { opacity: 1; }
 }
 
-/* Modal Content (Image) */
-.modal-content {
+.modal-content-wrapper {
+    background-color: #fefefe;
+    margin: 2% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 1200px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+#galleryTitle {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+    font-size: 2em;
+}
+
+/* Gallery Grid */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: scale(1.05);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+.gallery-item-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    color: white;
+    padding: 10px;
+    font-size: 14px;
+}
+
+/* Close buttons */
+.close, .close-image {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    cursor: pointer;
+}
+
+.close:hover, .close:focus,
+.close-image:hover, .close-image:focus {
+    color: #000;
+    text-decoration: none;
+}
+
+/* Image Viewer Modal */
+.modal-image {
     margin: auto;
     display: block;
     width: 80%;
@@ -1069,8 +1142,7 @@ body {
     to { transform: scale(1); }
 }
 
-/* Caption Text */
-#caption {
+#imageCaption {
     margin: auto;
     display: block;
     width: 80%;
@@ -1078,58 +1150,35 @@ body {
     text-align: center;
     color: #ccc;
     padding: 10px 0;
-    height: 50px;
     font-size: 18px;
-    font-weight: 300;
-}
-
-/* Close Button */
-.close {
-    position: absolute;
-    top: 20px;
-    right: 35px;
-    color: #f1f1f1;
-    font-size: 40px;
-    font-weight: bold;
-    transition: 0.3s;
-    cursor: pointer;
-    z-index: 1001;
-}
-
-.close:hover,
-.close:focus {
-    color: #bbb;
-    text-decoration: none;
-}
-
-/* Make images clickable */
-.product-img {
-    cursor: pointer;
-    transition: transform 0.2s ease-in-out;
-}
-
-.product-img:hover {
-    transform: scale(1.05);
 }
 
 /* Responsive Design */
-@media only screen and (max-width: 700px) {
-    .modal-content {
+@media only screen and (max-width: 768px) {
+    .modal-content-wrapper {
+        width: 95%;
+        margin: 5% auto;
+        padding: 15px;
+    }
+    
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+    }
+    
+    .gallery-item img {
+        height: 150px;
+    }
+    
+    .modal-image {
         width: 95%;
         max-height: 70vh;
     }
-    
-    .close {
-        top: 10px;
-        right: 20px;
-        font-size: 30px;
-    }
-    
-    #caption {
-        font-size: 16px;
-        width: 95%;
-    }
 }
+
+
+    
+
 
         
     </style>
@@ -1295,13 +1344,24 @@ body {
         </div>
     </section>
 
-
-    <!-- Image Modal -->
-    <div id="imageModal" class="modal">
+    <!-- Gallery Modal -->
+<div id="galleryModal" class="modal">
+    <div class="modal-content-wrapper">
         <span class="close">&times;</span>
-        <img class="modal-content" id="modalImage">
-        <div id="caption"></div>
+        <h2 id="galleryTitle"></h2>
+        <div class="gallery-grid" id="galleryGrid">
+            <!-- Gallery images will be inserted here -->
+        </div>
     </div>
+</div>
+
+<!-- Image Viewer Modal (for enlarged single image) -->
+<div id="imageModal" class="modal">
+    <span class="close-image">&times;</span>
+    <img class="modal-image" id="modalImage">
+    <div id="imageCaption"></div>
+</div>
+
 
 
     <!-- Gallery Modal -->
@@ -1537,63 +1597,160 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-        // Get modal elements
-const modal = document.getElementById('imageModal');
-const modalImg = document.getElementById('modalImage');
-const captionText = document.getElementById('caption');
-const closeBtn = document.querySelector('.close');
 
-// Function to open modal with image
-function openImageModal(imgSrc, imgAlt) {
-    modal.style.display = 'block';
-    modalImg.src = imgSrc;
-    captionText.innerHTML = imgAlt;
+// Sample image data for each gallery
+const galleryData = {
+    bags: [
+        {
+            src: 'https://drive.google.com/thumbnail?id=11xrElc220WYBueur10TcnA_oXUSrCCLz&w=800&q=80',
+            caption: 'Eco-Friendly Shopping Bag'
+        },
+        {
+            src: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80',
+            caption: 'Premium Tote Bag'
+        },
+        {
+            src: 'https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=800&q=80',
+            caption: 'Stylish Handbag'
+        },
+        {
+            src: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=800&q=80',
+            caption: 'Market Shopping Bag'
+        }
+    ],
+    mats: [
+        {
+            src: 'https://drive.google.com/thumbnail?id=1cSKAg4oQ_Hoj6aJZB-j1MDrR4e2FOz4T&w=800&q=80',
+            caption: 'Natural Floor Mat'
+        },
+        {
+            src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80',
+            caption: 'Yoga Mat'
+        },
+        {
+            src: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&q=80',
+            caption: 'Decorative Rug'
+        },
+        {
+            src: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&q=80',
+            caption: 'Entrance Mat'
+        }
+    ],
+    pouches: [
+        {
+            src: 'https://drive.google.com/thumbnail?id=1RYL-eA_6GyJ8-Dr_iYb8_7Y4YhqUpWJe&w=800&q=80',
+            caption: 'Small Cosmetic Pouch'
+        },
+        {
+            src: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80',
+            caption: 'Gift Pouch'
+        },
+        {
+            src: 'https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=800&q=80',
+            caption: 'Travel Wallet'
+        },
+        {
+            src: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=800&q=80',
+            caption: 'Jewelry Pouch'
+        }
+    ]
+};
+
+// Get modal elements
+const galleryModal = document.getElementById('galleryModal');
+const imageModal = document.getElementById('imageModal');
+const galleryGrid = document.getElementById('galleryGrid');
+const galleryTitle = document.getElementById('galleryTitle');
+const modalImage = document.getElementById('modalImage');
+const imageCaption = document.getElementById('imageCaption');
+
+// Close buttons
+const closeGallery = document.querySelector('.close');
+const closeImage = document.querySelector('.close-image');
+
+// Function to open gallery modal
+function openGallery(category) {
+    const images = galleryData[category];
+    const categoryNames = {
+        bags: 'Jute Bags Collection',
+        mats: 'Jute Mats Collection',
+        pouches: 'Small Pouches Collection'
+    };
     
-    // Prevent body scrolling when modal is open
+    // Set title
+    galleryTitle.textContent = categoryNames[category];
+    
+    // Clear previous images
+    galleryGrid.innerHTML = '';
+    
+    // Add images to gallery
+    images.forEach((image, index) => {
+        const galleryItem = document.createElement('div');
+        galleryItem.className = 'gallery-item';
+        galleryItem.innerHTML = `
+            <img src="${image.src}" alt="${image.caption}">
+            <div class="gallery-item-caption">${image.caption}</div>
+        `;
+        
+        // Add click event to open image modal
+        galleryItem.addEventListener('click', () => {
+            openImageModal(image.src, image.caption);
+        });
+        
+        galleryGrid.appendChild(galleryItem);
+    });
+    
+    // Show gallery modal
+    galleryModal.style.display = 'block';
     document.body.style.overflow = 'hidden';
 }
 
-// Add click event listeners to all product images
-document.addEventListener('DOMContentLoaded', function() {
-    const productImages = document.querySelectorAll('.product-img');
-    
-    productImages.forEach(function(img) {
-        img.addEventListener('click', function(e) {
-            e.stopPropagation(); // Prevent the product card click event
-            openImageModal(this.src, this.alt);
-        });
-    });
+// Function to open image modal (single enlarged image)
+function openImageModal(imageSrc, caption) {
+    modalImage.src = imageSrc;
+    imageCaption.textContent = caption;
+    imageModal.style.display = 'block';
+}
+
+// Close gallery modal
+closeGallery.addEventListener('click', () => {
+    galleryModal.style.display = 'none';
+    document.body.style.overflow = 'auto';
 });
 
-// Close modal functionality
-closeBtn.addEventListener('click', function() {
-    modal.style.display = 'none';
-    document.body.style.overflow = 'auto'; // Restore body scrolling
+// Close image modal
+closeImage.addEventListener('click', () => {
+    imageModal.style.display = 'none';
 });
 
-// Close modal when clicking outside the image
-modal.addEventListener('click', function(e) {
-    if (e.target === modal) {
-        modal.style.display = 'none';
+// Close modals when clicking outside
+galleryModal.addEventListener('click', (e) => {
+    if (e.target === galleryModal) {
+        galleryModal.style.display = 'none';
         document.body.style.overflow = 'auto';
     }
 });
 
-// Close modal with Escape key
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && modal.style.display === 'block') {
-        modal.style.display = 'none';
-        document.body.style.overflow = 'auto';
+imageModal.addEventListener('click', (e) => {
+    if (e.target === imageModal) {
+        imageModal.style.display = 'none';
     }
 });
 
-// Handle window resize
-window.addEventListener('resize', function() {
-    if (modal.style.display === 'block') {
-        // Recalculate modal content size if needed
-        modalImg.style.maxHeight = '80vh';
+// Close modals with Escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        if (imageModal.style.display === 'block') {
+            imageModal.style.display = 'none';
+        }
+        if (galleryModal.style.display === 'block') {
+            galleryModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
     }
 });
+
+     
 
 </script>
 
