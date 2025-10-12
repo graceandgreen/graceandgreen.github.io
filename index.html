@@ -1450,77 +1450,7 @@ body {
 
     <!-- JavaScript -->
     <script>
-// Product gallery data
-const galleryData = {
-    bags: {
-        title: "Jute Bags Collection",
-        items: [
-            { img: "https://drive.google.com/thumbnail?id=1YzFpGE6NhuYgFCxAB16xvPxKtsU0SyPu&sz=w1200", title: "Shopping Bag" },
-        ]
-    },
-    mats: {
-        title: "Jute Mats Collection",
-        items: [
-            { img: "https://drive.google.com/thumbnail?id=1YzFpGE6NhuYgFCxAB16xvPxKtsU0SyPu&sz=w1200", title: "Yoga Mat" },
-            { img: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80", title: "Floor Mat" },
-            { img: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80", title: "Welcome Mat" },
-            { img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=400&q=80", title: "Kitchen Mat" },
-            { img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=400&q=80", title: "Bathroom Mat" },
-            { img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80", title: "Meditation Mat" }
-        ]
-    },
-    pouches: {
-        title: "Small Pouches Collection",
-        items: [
-            { img: "https://drive.google.com/thumbnail?id=1YzFpGE6NhuYgFCxAB16xvPxKtsU0SyPu&w=800&q=1200", title: "Cosmetic Pouch" },
-            { img: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=400&q=80", title: "Phone Pouch" },
-            { img: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=400&q=80", title: "Coin Purse" },
-            { img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=400&q=80", title: "Travel Pouch" },
-            { img: "https://images.unsplash.com/photo-1506629905607-5d45a7f89f0e?auto=format&fit=crop&w=400&q=80", title: "Gift Pouch" },
-            { img: "https://images.unsplash.com/photo-1454023492550-5696f8ff10e1?auto=format&fit=crop&w=400&q=80", title: "Jewelry Pouch" }
-        ]
-    },
-    decor: {
-        title: "Decorative Items Collection",
-        items: [
-            { img: "https://images.unsplash.com/photo-1416339306562-f3d12fefd36f?auto=format&fit=crop&w=400&q=80", title: "Jute Planter" },
-            { img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=400&q=80", title: "Wall Hanging" },
-            { img: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80", title: "Storage Basket" },
-            { img: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=400&q=80", title: "Lamp Shade" },
-            { img: "https://images.unsplash.com/photo-1416339306562-f3d12fefd36f?auto=format&fit=crop&w=400&q=80", title: "Table Runner" },
-            { img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=400&q=80", title: "Decorative Bowl" }
-        ]
-    }
-};
-
-function openGallery(category) {
-    const modal = document.getElementById('galleryModal');
-    const modalTitle = document.getElementById('modalTitle');
-    const galleryGrid = document.getElementById('galleryGrid');
-    
-    modalTitle.textContent = galleryData[category].title;
-    galleryGrid.innerHTML = '';
-    
-    galleryData[category].items.forEach(item => {
-        const galleryItem = document.createElement('div');
-        galleryItem.className = 'gallery-item';
-        galleryItem.innerHTML = `
-            <img class="gallery-img" src="${item.img}" alt="${item.title}">
-            <div class="gallery-item-title">${item.title}</div>
-        `;
-        galleryGrid.appendChild(galleryItem);
-    });
-    
-    modal.style.display = 'block';
-    document.body.style.overflow = 'hidden';
-}
-
-function closeGallery() {
-    const modal = document.getElementById('galleryModal');
-    modal.style.display = 'none';
-    document.body.style.overflow = '';
-}
-
+// Mobile menu and navigation functionality
 document.addEventListener('DOMContentLoaded', function() {
     var mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
     var navMenu = document.querySelector('.nav-menu');
@@ -1567,16 +1497,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-});
 
-window.addEventListener('click', function(event) {
-    const modal = document.getElementById('galleryModal');
-    if (event.target === modal) {
-        closeGallery();
-    }
-});
-
-document.addEventListener('DOMContentLoaded', function() {
+    // Smooth scrolling for navigation links
     var navLinks = document.querySelectorAll('.nav-menu a[href^="#"], .shop-btn[href^="#"]');
     
     for (var i = 0; i < navLinks.length; i++) {
@@ -1597,8 +1519,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-
-// Sample image data for each gallery
+// Gallery data - SINGLE DECLARATION
 const galleryData = {
     bags: [
         {
@@ -1664,12 +1585,13 @@ const galleryTitle = document.getElementById('galleryTitle');
 const modalImage = document.getElementById('modalImage');
 const imageCaption = document.getElementById('imageCaption');
 
-// Close buttons
-const closeGallery = document.querySelector('.close');
-const closeImage = document.querySelector('.close-image');
-
-// Function to open gallery modal
+// SINGLE openGallery function
 function openGallery(category) {
+    if (!galleryData[category]) {
+        console.error('Category not found:', category);
+        return;
+    }
+    
     const images = galleryData[category];
     const categoryNames = {
         bags: 'Jute Bags Collection',
@@ -1712,47 +1634,53 @@ function openImageModal(imageSrc, caption) {
     imageModal.style.display = 'block';
 }
 
-// Close gallery modal
-closeGallery.addEventListener('click', () => {
-    galleryModal.style.display = 'none';
-    document.body.style.overflow = 'auto';
-});
-
-// Close image modal
-closeImage.addEventListener('click', () => {
-    imageModal.style.display = 'none';
-});
-
-// Close modals when clicking outside
-galleryModal.addEventListener('click', (e) => {
-    if (e.target === galleryModal) {
-        galleryModal.style.display = 'none';
-        document.body.style.overflow = 'auto';
+// Close buttons functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const closeGallery = document.querySelector('.close');
+    const closeImage = document.querySelector('.close-image');
+    
+    if (closeGallery) {
+        closeGallery.addEventListener('click', () => {
+            galleryModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
     }
-});
-
-imageModal.addEventListener('click', (e) => {
-    if (e.target === imageModal) {
-        imageModal.style.display = 'none';
-    }
-});
-
-// Close modals with Escape key
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        if (imageModal.style.display === 'block') {
+    
+    if (closeImage) {
+        closeImage.addEventListener('click', () => {
             imageModal.style.display = 'none';
-        }
-        if (galleryModal.style.display === 'block') {
+        });
+    }
+    
+    // Close modals when clicking outside
+    galleryModal.addEventListener('click', (e) => {
+        if (e.target === galleryModal) {
             galleryModal.style.display = 'none';
             document.body.style.overflow = 'auto';
         }
-    }
+    });
+
+    imageModal.addEventListener('click', (e) => {
+        if (e.target === imageModal) {
+            imageModal.style.display = 'none';
+        }
+    });
+
+    // Close modals with Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            if (imageModal.style.display === 'block') {
+                imageModal.style.display = 'none';
+            }
+            if (galleryModal.style.display === 'block') {
+                galleryModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+    });
 });
-
-     
-
 </script>
+
 
 </body>
 </html>
